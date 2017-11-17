@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body,html{
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+		<script src="js/phaser.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<script>
+			var game= new Phaser.Game(800,500,Phaser.AUTO,'',{ preload: preload, create: create, update: update});
+			function preload(){
+				console.log('preload');
+				game.load.image('star','imgs/star.png');
+				game.load.image('ground','imgs/platforms.png');
+				game.load.image('dude','imgs/dude.png',32,48); 
+				
+//				game.load.spritesheet('dude','imgs/dude.png',32,48); //spritesheet  是啥
+				
+			}
+			var platforms;
+			var player;
+			var cursors;
+			var stars;
+			var scoreText;
+			var score = 0;
+			function create(){
+				console.log('create');
+				game.physics.startSystem(Phaser.Physics.AOCADE);
+//				game.add.sprite(0,0,'star');
+				platforms= game.add.group();
+				platforms.enableBody=true;
+				var ground=platforms.create(0,game.world.height-40,'ground');
+				ground.scale.setTo(2,2);
+				ground.body.immovable=true;			//immovable is what
+				var ledge= platforms.create(400,350,'ground');
+				ledge.body.immovable=true;
+				ledge= platforms.create(-150,200,'ground');
+				ledge.body.immovable=true;
+				
+				player = game.add.sprite(32,game.world.height-300,'dude');
+				game.physics.arcade.enable(player);
+				player.body.bounce.y=0.2;
+				player.body.gravity.y=300;
+				player.body.collideWorldBounds=true;   //player.body.collideWorldBounds = true;这句话设置了它会与边界进行碰撞 ，去掉这句话人物会掉出去
+				player.animations.add('left',[0,1,2,3],10,true);
+				player.animations.add('right',[0,1,2,3],10,true);
+				
+				cursors = game.input.keyboard.createCursorKeys();//来获取系统的键盘输入对象。
+				
+				stars=game.add.group();
+				stars.enableBody=true;		//什么意思
+				for(var i=0 ;i<12 ; i++){
+					var star= stars.create(i*70,0,'star');
+					star.scale.setTo(0.3,0.3);
+					star.body.gravity.y=300;
+					star.body.bounce.y =0.7+Math.random()*0.2;
+					console.log(star)
+				}
+				 scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#fff' });
+			}
+			function update(){
+				//人物站在板子上
+				game.physics.arcade.collide(player, platforms);	//这句话表示，检测小人与platforms组的碰撞，而大地正是在platforms组中，这样，小人就不会穿过大地了。同样地，当小人与两个平板碰撞时，也不会穿过了。
+				game.physics.arcade.collide(stars,platforms);
+				game.physics.arcade.overlap(player,stars,collectStar,null,this);
+				player.body.velocity.x=0;
+				
+				if(cursors.left.isDown){
+					player.body.velocity.x=-150;
+					player.animations.play('left');
+				}else if(cursors.right.isDown){
+					player.body.velocity.x=150;
+					player.animations.play('right');
+				}else{
+					player.animations.stop();
+					player.frame=4;
+				}
+				if (cursors.up.isDown && player.body.touching.down)
+			    {
+			        player.body.velocity.y = -350;
+			    }
+			}
+			function collectStar (player, star) {
+			    star.kill();
+			    score+=10;
+			    scoreText.text='Score';
+			}
+		</script>
+		<!--// 监听加载完一个文件的事件
+            game.load.onFileComplete.add(function(progress, fileKey, success, totalLoadedFiles, totalFiles) {
+                progressText.text = progress + '%';
+                console.log(progress, fileKey, success, totalLoadedFiles, totalFiles)
+            });-->
+	</body>
+</html>
+ 
