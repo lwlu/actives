@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="../resource/css/init.css" />
+		<style>
+			html {
+				/*overflow: hidden;*/
+			}
+			
+			body {
+				width: 100%;
+			}
+			
+			.turntable-bg .pointer {
+				width: 22%;
+				position: absolute;
+				z-index: 8;
+				margin: auto;
+				left: 0;
+				right: 0;
+				top: 40%;
+				bottom: 0;
+			}
+			
+			.turntable-bg .rotate {
+				width: 80%;
+				position: absolute;
+				margin: auto;
+				left: 0;
+				right: 0;
+				margin-top: 46%;
+			}
+		</style>
+		<script src="../resource/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/awardRotate.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				//	var item = rnd(0, 7);
+				var item = 3;
+				var num=7;		//转盘的分割的个数
+				var arr=[];
+				var text=["7","6","5","4","3","2","1"];//转盘每个部分的文字
+				//转盘配置
+				for(i=0;i<num;i++){ 
+					let angles=180/num;
+					if(i==(num-1)){
+						arr[num-i-1]=angles;
+					}else{
+						arr[num-i-1]=360/num*i+angles;
+					}
+				}
+				var rotateTimeOut = function() {
+					$('#rotate').rotate({
+						angle: 0,
+						animateTo: 2160,
+						duration: 8000,
+						callback: function() {
+							alert('网络超时，请检查您的网络设置！');
+						}
+					});
+				};
+				var bRotate = false;
+
+				var rotateFn = function( angles, txt) {
+					bRotate = !bRotate;
+					$('#rotate').stopRotate();
+					$('#rotate').rotate({
+						angle: 0,
+						animateTo: angles + 1800,
+						duration: 8000,
+						callback: function() {
+							alert(txt);
+							bRotate = !bRotate;
+						}
+					})
+				};
+
+				$('.pointer').click(function() {
+					if(bRotate) return;
+					rotateFn(arr[item],text[item]);
+				});
+			});
+
+			function rnd(n, m) {
+				return Math.floor(Math.random() * (m - n + 1) + n)
+			}
+		</script>
+
+	</head>
+
+	<body>
+		<div class="box">
+			<div class="turntable-bg">
+				<div class="pointer"><img src="images/zhe.png" alt="pointer" /></div>
+				<div class="rotate"><img id="rotate" src="images/turnplate.png" alt="turntable" /></div>
+			</div>
+		</div>
+	</body>
+
+</html>
