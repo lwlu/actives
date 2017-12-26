@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1,user-scalable=no">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>jQuery老虎机抽奖代码</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<script src="../resource/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="com-main">
+			<div class="slots">
+				<ul>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+		</div>
+		<!--开始游戏-->
+		<div class="start-btn"></div>
+
+		<script>
+			$(function() {
+				fontSize();
+				window.onresize = fontSize;
+				//抽奖play按钮
+				$('.start-btn').click(function() {
+					var u = $("li").height(); //盒子的高度
+					document.body.clientWidth * 10
+					var random = []; //中奖随机数 ,分解金豆获取钢镚'000','111','222'，
+					//	random[0]=Math.ceil(Math.random()*10) %9;
+					//	random[1]=random[0];
+					//	random[2]=Math.ceil(Math.random()*10) %9;
+					//	random[2]=random[2]==random[0]?(random[2]+1)%9:random[2];
+					for(i = 0; i < 3; i++) {
+						random[i] = Math.ceil(Math.random() * 10) % 9;
+					}
+					var _this = $(this);
+					var u=12.5;// 高=宽*u
+					if(!_this.hasClass('active')) {
+						_this.addClass('active');
+						$(".com-main .slots ul li").slots(u, random);
+					}
+				});
+			});
+
+			function fontSize() {
+				var a = document.documentElement.clientWidth > 768 ? 768 : document.documentElement.clientWidth;
+				document.documentElement.style.fontSize = (a / 768) + "px"
+			}
+			var isBegin = false;
+			jQuery.fn.extend({
+				slots: function(u, prize) {
+					let _this = $(this);
+					if(isBegin) {
+						return false
+					}
+					isBegin = true;
+					_this.css("backgroundPositionY", 0);
+					_this.each(function(i) {
+						var f = $(this);
+						(function(j) {
+							setTimeout(function() {
+								f.animate({ backgroundPositionY: ((u * 60) - (u * prize[j])) + "%" },
+									6000 + j * 3000,
+									'swing',
+									function() {
+										if(j == 2) {
+											$('.start-btn').removeClass('active'); //还有抽奖机会移除active
+											isBegin = false;
+											console.log("恭喜你,获得序号为",prize);
+										}
+									}) //easeInOutCirc
+							}, j * 300)
+						})(i)
+					})
+				}
+			});
+		</script>
+
+		</div>
+	</body>
+
+</html>

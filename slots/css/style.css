@@ -1,0 +1,99 @@
+﻿html,
+body,
+p,
+ul,
+li {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+	font-weight: normal;
+	box-sizing: border-box;
+}
+li{
+	list-style: none;
+}
+body {
+ 	background: url(../images/indexBg.jpg)no-repeat;
+ 	background-size: 100%;
+ 	width: 100%;
+ 	background-color: #b791f4;
+ 	overflow: hidden;
+ }
+ .com-main {
+	position: relative;
+	width: 100%;
+}
+
+.com-main .slots {
+	position: relative;
+    padding-bottom: 98%;
+    width: 80%;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-top: 20%;
+}
+
+
+.com-main .slots ul {
+	height: 18.5%;
+    width: 70%;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: .6rem;
+    position: absolute;
+    margin-top: 23%;
+    margin-left: 16%;
+    list-style: none;
+   
+}
+
+.com-main .slots ul li {
+	float: left;
+	width: 32.1141%;
+    height: 100%;
+    margin-left: 1.2192%;
+    background-size: 100%;
+	background-position: left top;
+	background-repeat: repeat-y;
+	background-image: url("../images/prize-bg.png");
+}
+
+.com-main .slots ul li:last-child {
+	margin-right: 0;
+}
+.com-main .num{
+	position: absolute;
+    display: block;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 5%;
+    height: 6%;
+    margin-top: 69.9%;
+    left: 32%;
+    text-align: center;
+    color: #fff;
+}
+ .start-btn{
+ 	width: 52%;
+    height: 0;
+    padding-bottom: 12%;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-top: 79%;
+}
+
+
+
